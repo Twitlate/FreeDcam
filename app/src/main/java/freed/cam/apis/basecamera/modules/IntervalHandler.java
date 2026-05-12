@@ -19,9 +19,11 @@
 
 package freed.cam.apis.basecamera.modules;
 
+import android.os.Handler;
 import android.os.SystemClock;
 
 import freed.FreedApplication;
+import freed.utils.SharedBackgroundHandlerPool;
 import freed.cam.ActivityFreeDcamMain;
 import freed.cam.ui.themesample.handler.UserMessageHandler;
 import freed.settings.SettingKeys;
@@ -46,7 +48,7 @@ public class IntervalHandler
     //holds the time that is gone bevor next capture happens in Sec
     private int timeGoneTillNextCapture;
 
-    private Thread intervalBackgroundThread;
+    private Handler intervalBackgroundHandler;
 
     private final Object waitForCaptureEnd = new Object();
     private final SettingsManager settingsManager;
@@ -120,7 +122,9 @@ public class IntervalHandler
     private void startInterval()
     {
         Log.d(TAG, "Start IntervalThread" + " " + Thread.currentThread().getName());
-        intervalBackgroundThread = new Thread(()->
+        intervalBackgroundHandler = SharedBackgroundHandlerPool.getInstance().requestHandler("IntervalHandler");
+        // Use handler.post() instead of creating a new Thread for background work
+        intervalBackgroundHandler.post(() ->
         {
             Log.d(TAG, "Started IntervalThread" + " " + Thread.currentThread().getName());
             working = true;
@@ -176,16 +180,15 @@ public class IntervalHandler
             working = false;
             Log.d(TAG, "Stopped IntervalThread" + " " + Thread.currentThread().getName());
         });
-        intervalBackgroundThread.setName("intervalBackgroundThread");
-        intervalBackgroundThread.start();
+        Log.d(TAG, "IntervalHandler thread started via shared pool");
     }
 
     public void CancelInterval()
     {
         Log.d(TAG, "Cancel Interval");
         working = false;
-        intervalBackgroundThread.interrupt();
-        intervalBackgroundThread = null;
+        SharedBackgroundHandlerPool.getInstance().releaseHandler("IntervalHandler");
+        intervalBackgroundHandler = null;
         timeGoneTillNextCapture = 0;
         sleepTimeBetweenCaptures = 0;
     }

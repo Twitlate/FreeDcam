@@ -3,6 +3,7 @@ package freed.cam.apis.camera2.parameters.ae;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CaptureRequest;
 import android.os.Build;
+import android.os.Handler;
 
 import androidx.annotation.RequiresApi;
 
@@ -22,14 +23,14 @@ import freed.cam.ui.themesample.handler.UserMessageHandler;
 import freed.gl.MeteringProcessor;
 import freed.settings.SettingKeys;
 import freed.settings.SettingsManager;
-import freed.utils.BackgroundHandlerThread;
+import freed.utils.SharedBackgroundHandlerPool;
 import freed.utils.Log;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class FreedAeManger extends AeManagerCamera2 implements MeteringProcessor.MeteringEvent
 {
     private final String TAG = FreedAeManger.class.getSimpleName();
-    private final BackgroundHandlerThread backgroundHandlerThread;
+    Handler sharedCameraBackground;
     private final MeteringProcessor meteringProcessor;
     private final Camera2 cameraWrapperInterface;
 
@@ -59,7 +60,7 @@ public class FreedAeManger extends AeManagerCamera2 implements MeteringProcessor
         this.userMessageHandler = userMessageHandler;
         this.settingsManager =settingsManager;
         aeMath = new AeMath();
-        backgroundHandlerThread = new BackgroundHandlerThread(TAG);
+        sharedCameraBackground = SharedBackgroundHandlerPool.getInstance().requestHandler(TAG);
         meteringProcessor = ActivityFreeDcamMain.histogramController().getMeteringProcessor();
         manualExposureTime.setViewState(AbstractParameter.ViewState.Visible);
         exposureCompensation.setViewState(AbstractParameter.ViewState.Visible);
@@ -92,14 +93,14 @@ public class FreedAeManger extends AeManagerCamera2 implements MeteringProcessor
         min_iso = cameraWrapperInterface.getCameraHolder().characteristics.get(CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE).getLower();
         aperture = cameraWrapperInterface.getCameraHolder().characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_APERTURES)[0];
         focal_length = cameraWrapperInterface.getCameraHolder().characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)[0];
-        backgroundHandlerThread.create();
+        // Thread already created via requestHandler in constructor, no additional create needed
         meteringProcessor.setMeteringEventListener(this);
 
     }
 
     public void stop()
     {
-        backgroundHandlerThread.destroy();
+        SharedBackgroundHandlerPool.getInstance().releaseHandler(TAG);
         meteringProcessor.setMeteringEventListener(null);
         Log.d(TAG, "stop");
     }
@@ -184,7 +185,7 @@ public class FreedAeManger extends AeManagerCamera2 implements MeteringProcessor
     public void onMeteringDataChanged(int[] meters) {
         if (!this.measureMeter.isWorking) {
             this.measureMeter.setMeter(meters);
-            backgroundHandlerThread.execute(measureMeter);
+            sharedCameraBackground.post(measureMeter);
         }
     }
 
@@ -193,7 +194,7 @@ public class FreedAeManger extends AeManagerCamera2 implements MeteringProcessor
         if (this.measureMeter.isWorking)
             return;
         measureMeter.addLuma(luma);
-        backgroundHandlerThread.execute(measureMeter);
+        sharedCameraBackground.post(measureMeter);
     }
 
     private final MeasureMeter measureMeter = new MeasureMeter();

@@ -5,13 +5,14 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Build;
 import android.util.Log;
+import android.os.Handler;
 import android.util.Size;
 import android.view.Surface;
 
 import androidx.annotation.RequiresApi;
 
 import freed.image.ImageTask;
-import freed.utils.BackgroundHandlerThread;
+import freed.utils.SharedBackgroundHandlerPool;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public abstract class AbstractImageCapture implements ImageCaptureInterface {
@@ -19,7 +20,7 @@ public abstract class AbstractImageCapture implements ImageCaptureInterface {
     private final String TAG = AbstractImageCapture.class.getSimpleName();
     protected final int max_images;
     private final ImageReader imageReader;
-    private final BackgroundHandlerThread backgroundHandlerThread;
+    Handler sharedCameraBackground;
     private boolean setToPreview = false;
     protected Image image;
     protected CaptureResult result;
@@ -28,12 +29,11 @@ public abstract class AbstractImageCapture implements ImageCaptureInterface {
 
     public AbstractImageCapture(Size size, int format, boolean setToPreview, int max_images)
     {
-        backgroundHandlerThread = new BackgroundHandlerThread("AbstractImageCapture");
-        backgroundHandlerThread.create();
+        sharedCameraBackground = SharedBackgroundHandlerPool.getInstance().requestHandler("AbstractImageCapture");
         this.setToPreview = setToPreview;
         this.max_images = max_images;
         imageReader = ImageReader.newInstance(size.getWidth(),size.getHeight(),format,max_images);
-        imageReader.setOnImageAvailableListener(this,backgroundHandlerThread.getBackgroundHandler());
+        imageReader.setOnImageAvailableListener(this,sharedCameraBackground);
     }
 
     public void resetTask()
@@ -105,7 +105,7 @@ public abstract class AbstractImageCapture implements ImageCaptureInterface {
             imageReader.close();
         if (image != null)
             image.close();
-        backgroundHandlerThread.destroy();
+        SharedBackgroundHandlerPool.getInstance().releaseHandler("AbstractImageCapture");
 
     }
 
