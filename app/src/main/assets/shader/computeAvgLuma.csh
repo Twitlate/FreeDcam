@@ -13,7 +13,7 @@ void main() {
         uint green = uint(texColor.g * 255.0);
         uint blue = uint(texColor.b * 255.0);
         float lum = ((0.21260 * float(red)) + (0.71520 * float(green)) + (0.0722 * float(blue)));
-        lum = lum / float(imgsize.x * imgsize.y);
+        // division by total pixel count done once in Java after accumulation
         uint l = uint(lum * 1000000.) ;
         atomicAdd(luma[0], l);
     }

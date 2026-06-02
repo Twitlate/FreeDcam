@@ -70,6 +70,13 @@ public class MainRenderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
     SharedStorageBufferObject histogramB_SSBO;
     SharedStorageBufferObject waveform_SSBO;
     SharedStorageBufferObject avgLuma_SSBO;
+
+    // Pending histogram/waveform data from previous frame to be sent this frame (deferred readback)
+    private HistogramData mPendingHistogramData = null;
+    private int[] mPendingWaveformData = null;
+    private boolean mHasPendingHistogram = false;
+    private boolean mHasPendingWaveform = false;
+
     int width;
     int height;
 
@@ -131,38 +138,52 @@ public class MainRenderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
         }
         oesProgram.draw(cameraInputTextureHolder,oesFrameBuffer);
 
+        // Send histogram/waveform data computed in PREVIOUS frame to controller now.
+        // This eliminates intra-frame sync chain — readback happens at start of this
+        // frame for values from previous frame's compute shaders (which are already done).
+        if (mHasPendingHistogram && mPendingHistogramData != null) {
+            mView.getHistogramController().updateData(mPendingHistogramData);
+            mHasPendingHistogram = false;
+        }
+        if (mHasPendingWaveform && mPendingWaveformData != null) {
+            mView.getHistogramController().setWaveFormData(mPendingWaveformData, width, height/waveform_factor);
+            mHasPendingWaveform = false;
+        }
+
         if ((mView.getHistogramController().getMeteringProcessor() != null
                 && mView.getHistogramController().getMeteringProcessor().isMeteringEnabled())
                 || mView.getHistogramController().isEnabled())
         {
-            //draw
-            previewProgram.draw(oesFbTexture,processingBuffer1);
             //custom ae
             if (mView.getHistogramController().getMeteringProcessor() != null
                     && mView.getHistogramController().getMeteringProcessor().isMeteringEnabled()) {
                 avgLuma_SSBO.clearBuffer();
                 avgLumaComputeProgram.compute(width/16,height/16,oesFrameBuffer,avgLuma_SSBO);
                 int[] l = avgLuma_SSBO.getHistogramChannel();
-                float luma = (float)l[0] / 1000000f;
+                // divide by total pixel count once here (shader accumulates raw sum)
+                float luma = (float)l[0] / ((float)(width/16) * (float)(height/16) * 1000000f);
                 mView.getHistogramController().getMeteringProcessor().setLuma(luma);
             }
 
-            //histogram and waveform
+            //histogram and waveform — compute for current frame; data consumed next frame (deferred readback)
             if (mView.getHistogramController().isEnabled()) {
                 histogramComputeProgram.computeFB(width/16,height/16,oesFrameBuffer,histogramR_SSBO,histogramG_SSBO,histogramB_SSBO);
-                int[] red = histogramR_SSBO.getHistogramChannel();
-                int[] green = histogramG_SSBO.getHistogramChannel();
-                int[] blue = histogramB_SSBO.getHistogramChannel();
-
-                HistogramData data = new HistogramData(red,green,blue);
-                mView.getHistogramController().updateData(data);
+                // Read SSBO — sync stall deferred to start of NEXT frame when this data is sent to controller
+                mPendingHistogramData = new HistogramData(
+                    histogramR_SSBO.getHistogramChannel(),
+                    histogramG_SSBO.getHistogramChannel(),
+                    histogramB_SSBO.getHistogramChannel()
+                );
+                // clear buffers for next compute (these will be written by next frame's dispatch)
                 histogramR_SSBO.clearBuffer();
                 histogramG_SSBO.clearBuffer();
                 histogramB_SSBO.clearBuffer();
+                mHasPendingHistogram = true;
 
                 waveformComputeProgam.compute(width/64,height/waveform_factor,oesFrameBuffer,waveform_SSBO);
-                int[] wave = waveform_SSBO.getHistogramChannel();
-                mView.getHistogramController().setWaveFormData(wave, width, height/waveform_factor);
+                // Read SSBO — sync stall deferred to start of NEXT frame when this data is sent to controller
+                mPendingWaveformData = waveform_SSBO.getHistogramChannel();
+                mHasPendingWaveform = true;
             }
         }
 
@@ -192,10 +213,13 @@ public class MainRenderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
                 break;
         }
 
-        if (clippingComputeProgram.getFloat_position() <= 1000)
-            clippingComputeProgram.setFloat_position(clippingComputeProgram.getFloat_position() +1);
-        else
-            clippingComputeProgram.setFloat_position(0);
+        // only animate zebra pattern when zebra mode is active
+        if (processors == GLPreview.PreviewProcessors.Zebra || processors == GLPreview.PreviewProcessors.FocusPeak_Zebra) {
+            if (clippingComputeProgram.getFloat_position() <= 1000)
+                clippingComputeProgram.setFloat_position(clippingComputeProgram.getFloat_position() +1);
+            else
+                clippingComputeProgram.setFloat_position(0);
+        }
         drawing = false;
     }
 
