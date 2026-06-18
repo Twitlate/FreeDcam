@@ -17,7 +17,7 @@ import freed.gl.program.compute.AvgLumaComputeProgram;
 import freed.gl.program.compute.ClippingComputeProgram;
 import freed.gl.program.compute.FocusPeakComputeProgram;
 import freed.gl.program.compute.HistogramComputeProgram;
-import freed.gl.program.compute.WaveformComputeProgam;
+import freed.gl.program.compute.WaveformComputeProgram;
 import freed.gl.program.draw.OesProgram;
 import freed.gl.program.draw.PreviewProgram;
 import freed.gl.shader.Shader;
@@ -57,7 +57,7 @@ public class MainRenderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
     private final ClippingComputeProgram clippingComputeProgram;
     private final FocusPeakComputeProgram focusPeakComputeProgram;
     private final HistogramComputeProgram histogramComputeProgram;
-    private final WaveformComputeProgam waveformComputeProgam;
+    private final WaveformComputeProgram waveformComputeProgam;
     private final AvgLumaComputeProgram avgLumaComputeProgram;
 
     GLCameraTex cameraInputTextureHolder;
@@ -97,7 +97,7 @@ public class MainRenderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
         clippingComputeProgram = new ClippingComputeProgram(glesv);
         focusPeakComputeProgram = new FocusPeakComputeProgram(glesv);
         histogramComputeProgram = new HistogramComputeProgram(glesv);
-        waveformComputeProgam = new WaveformComputeProgam(glesv);
+        waveformComputeProgam = new WaveformComputeProgram(glesv);
         avgLumaComputeProgram = new AvgLumaComputeProgram(glesv);
     }
 
@@ -267,7 +267,7 @@ public class MainRenderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.WriteEx(e);
             }
         }
         closeBuffers();
@@ -310,7 +310,7 @@ public class MainRenderer implements GLSurfaceView.Renderer, SurfaceTexture.OnFr
 
     }
 
-    public WaveformComputeProgam getWaveFormRGBProgram() {
+    public WaveformComputeProgram getWaveFormRGBProgram() {
         return waveformComputeProgam;
     }
 

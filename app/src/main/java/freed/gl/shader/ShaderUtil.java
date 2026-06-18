@@ -36,14 +36,14 @@ public class ShaderUtil {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Shader file read failed: " + e.getMessage());
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
                     //log the exception
-                    e.printStackTrace();
+                    Log.w(TAG, "Reader close failed: " + e.getMessage());
                 }
             }
         }

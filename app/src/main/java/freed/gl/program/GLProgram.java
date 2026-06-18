@@ -4,7 +4,7 @@ import android.opengl.GLES31;
 
 import freed.utils.Log;
 
-public abstract class GLProgram implements GLProgamInterface {
+public abstract class GLProgram implements GLProgramInterface {
     protected float glesVersion;
     protected int hProgram = -1;
 

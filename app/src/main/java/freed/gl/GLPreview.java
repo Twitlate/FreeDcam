@@ -92,7 +92,9 @@ public class GLPreview extends GLSurfaceView {
 
     @Override
     public void onPause() {
-        fireOnSurfaceTextureDestroyed(getSurfaceTexture());
+        SurfaceTexture st = getSurfaceTexture();
+        if (st != null)
+            fireOnSurfaceTextureDestroyed(st);
         //mRenderer.onPause();
         super.onPause();
     }

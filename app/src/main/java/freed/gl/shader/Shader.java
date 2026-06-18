@@ -2,9 +2,12 @@ package freed.gl.shader;
 
 import android.opengl.GLES31;
 
+import freed.utils.Log;
+
 import java.io.IOException;
 
 public abstract class Shader<T extends Shader> {
+    private final String TAG = Shader.class.getSimpleName();
 
     public enum ShaderType
     {
@@ -37,7 +40,7 @@ public abstract class Shader<T extends Shader> {
         try {
             return ShaderUtil.getShader(glesVersion,getShaderName(),getShaderType());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Shader loading failed: " + e.getMessage());
         }
         return null;
     }
