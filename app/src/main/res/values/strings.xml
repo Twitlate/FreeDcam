@@ -20,6 +20,9 @@
     <string name="setting_picturesize_description">Picture Size : </string>
     <string name="setting_picturesize_header">Size: </string>
 
+    <string name="setting_mtkaov_description">All on Video</string>
+    <string name="setting_mtkaov_header">AoV Mode</string>
+
     <string name="setting_secondarypicturesize_description">Secondary Picture Size : </string>
     <string name="setting_secondarypicturesize_header">Secondary Size: </string>
     <string name="setting_raw_group_header">Raw Stuff </string>

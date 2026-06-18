@@ -62,6 +62,7 @@ import freed.cam.apis.camera2.parameters.modes.HistogramQcom;
 import freed.cam.apis.camera2.parameters.modes.JpegQualityModeApi2;
 import freed.cam.apis.camera2.parameters.modes.MFNR;
 import freed.cam.apis.camera2.parameters.modes.MeteringMode;
+import freed.cam.apis.camera2.parameters.modes.MtkAovModeApi2;
 import freed.cam.apis.camera2.parameters.modes.PictureFormatParameterApi2;
 import freed.cam.apis.camera2.parameters.modes.PictureSizeModeApi2;
 import freed.cam.apis.camera2.parameters.modes.RawSizeModeApi2;
@@ -265,6 +266,8 @@ public class ParameterHandlerApi2 extends AbstractParameterHandler<Camera2>
 
         if (settingsManager.get(SettingKeys.HISTOGRAM_STATS_QCOM).isSupported())
             add(SettingKeys.HISTOGRAM_STATS_QCOM, new HistogramQcom(cameraUiWrapper,SettingKeys.HISTOGRAM_STATS_QCOM));
+        if(settingsManager.get(SettingKeys.MTK_AOV_MODE).isSupported())
+            add(SettingKeys.MTK_AOV_MODE,new MtkAovModeApi2(cameraUiWrapper,SettingKeys.MTK_AOV_MODE));
     }
 
     @Override

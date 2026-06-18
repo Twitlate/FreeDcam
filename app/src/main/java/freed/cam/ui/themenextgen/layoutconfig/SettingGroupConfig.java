@@ -31,6 +31,7 @@ public class SettingGroupConfig
         group.add(new SettingItemConfig(SettingKeys.JPEG_QUALITY, R.string.setting_jpegquality_header, R.string.setting_jpegquality_description,false, SettingItemConfig.ViewType.Text));
         group.add(new SettingItemConfig(SettingKeys.MFNR, R.string.setting_mfnr_header,R.string.setting_mfnr_description,false, SettingItemConfig.ViewType.Boolean));
         group.add(new SettingItemConfig(SettingKeys.XIAOMI_MFNR, R.string.setting_xiaomimfnr_header,R.string.setting_mfnr_description,false, SettingItemConfig.ViewType.Boolean));
+        group.add(new SettingItemConfig(SettingKeys.MTK_AOV_MODE, R.string.setting_mtkaov_header,R.string.setting_mtkaov_description,false, SettingItemConfig.ViewType.Text));
         return group;
     }
 

@@ -136,6 +136,12 @@ public class SettingsMenuItemFactory
                     SettingsChild_BooleanSetting mfnr = new SettingsChild_BooleanSetting(context, (BooleanSettingModeInterface) params.get(SettingKeys.XIAOMI_MFNR), R.string.setting_xiaomimfnr_header,R.string.setting_mfnr_description);
                     picGroup.addView(mfnr);
                 }
+                if (params.get(SettingKeys.MTK_AOV_MODE) != null)
+                {
+                    SettingsChildMenu mtkaov = new SettingsChildMenu(context, params.get(SettingKeys.MTK_AOV_MODE), R.string.setting_mtkaov_header, R.string.setting_mtkaov_description);
+                    mtkaov.SetUiItemClickListner(click);
+                    picGroup.addView(mtkaov);
+                }
                 settingsChildHolder.addView(picGroup);
 
                 GroupChild intervalGroup = new GroupChild(context, context.getResources().getString(R.string.setting_Automation));

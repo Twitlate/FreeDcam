@@ -171,7 +171,7 @@ public class SettingKeys{
     public final static Key<SettingMode> MAX_ISO = new Key(SettingMode.class, R.string.aps_max_iso);
     public final static Key<SettingMode> MAX_EXPOSURE = new Key(SettingMode.class, R.string.aps_max_exposure);
     public final static Key<SettingMode> MIN_EXPOSURE = new Key(SettingMode.class, R.string.aps_min_exposure);
-
+    public final static Key<SettingMode> MTK_AOV_MODE = new Key(SettingMode.class, R.string.aps_mtk_aovmode);
 
     public final static ApiKey<SettingMode> PREVIEW_TEMPLATE = new ApiKey(SettingMode.class, R.string.aps_preview_template_mode);
     public final static ApiKey<SettingMode> CAPTURE_TEMPLATE = new ApiKey(SettingMode.class, R.string.aps_capture_template_mode);

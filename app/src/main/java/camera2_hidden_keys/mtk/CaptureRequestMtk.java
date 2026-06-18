@@ -17,8 +17,11 @@ public class CaptureRequestMtk extends AbstractCaptureRequest {
     public static final byte CONTROL_CAPTURE_ISP_TUNING_REQ_RAW = 1;
     public static final byte CONTROL_CAPTURE_ISP_TUNING_REQ_YUV = 2;
 
+    public static final CaptureRequest.Key<int[]> com_mediatek_aovservicefeature_aovMode;
+
     static {
 
         CONTROL_CAPTURE_ISP_META_REQUEST = getKeyType("com.mediatek.control.capture.ispTuningRequest", Byte.class);
+        com_mediatek_aovservicefeature_aovMode= getKeyType("com.mediatek.aovservicefeature.aovMode", int[].class);
     }
 }

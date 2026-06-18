@@ -59,6 +59,7 @@ import freed.cam.apis.featuredetector.camera2.huawei.IsoExposureTimeDetector;
 import freed.cam.apis.featuredetector.camera2.huawei.Raw12bitDetector;
 import freed.cam.apis.featuredetector.camera2.huawei.SecondarySensorSizeDetector;
 import freed.cam.apis.featuredetector.camera2.huawei.WhitebalanceRangeDetector;
+import freed.cam.apis.featuredetector.camera2.mtk.AovDetector;
 import freed.cam.apis.featuredetector.camera2.qcom.HistogramSupportedDetector;
 import freed.cam.apis.featuredetector.camera2.qcom.MFNRDetector;
 import freed.cam.apis.featuredetector.camera2.qcom.QcomAeDetector;
@@ -148,6 +149,9 @@ public class Camera2FeatureDetectorTask extends AbstractFeatureDetectorTask {
         parameter2Detectors.add(Raw12bitDetector.class);
         parameter2Detectors.add(SecondarySensorSizeDetector.class);
         parameter2Detectors.add(WhitebalanceRangeDetector.class);
+
+        //mtk
+        parameter2Detectors.add(AovDetector.class);
 
         //debug
         parameter2Detectors.add(DumpQCFA.class);

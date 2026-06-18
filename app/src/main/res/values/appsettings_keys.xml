@@ -144,6 +144,7 @@
     <string name="aps_support_postrawsensitivityboost" translatable="false">support_postrawsensitivityboost</string>
     <string name="aps_support_hidecameraui" translatable="false">hidecameraui</string>
     <string name="aps_support_aemetering" translatable="false">aemetering</string>
+    <string name="aps_mtk_aovmode" translatable="false">mtk_aovmode</string>
 
 
 
