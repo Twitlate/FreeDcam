@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="menuBackgColor">#46ffffff</color>
-    <color name="menuTextColor">#ffffff</color>
-    <color name="uiSettingsTextColor">#ffffff</color>
-    <color name="uiSettingsBackground">#bd000000</color>
-    <color name="colorPrimary">#3f51b5</color>
-    <color name="colorPrimaryDark">#11303f9f</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="menuBackgColor">#14000000</color>
+    <color name="menuTextColor">#FFFFFFFF</color>
+    <color name="uiSettingsTextColor">#FFFFFFFF</color>
+    <color name="uiSettingsBackground">#B314171D</color>
+    <color name="colorPrimary">#00E5FF</color>
+    <color name="colorPrimaryDark">#0F1115</color>
+    <color name="colorAccent">#00E5FF</color>
 
     <color name="black_overlay">#66000000</color>
-    <color name="button_notclicked">#b6b6b6</color>
-    <color name="button_clicked">#707070</color>
-
+    <color name="button_notclicked">#E6E6E6</color>
+    <color name="button_clicked">#00E5FF</color>
 
     <color name="nextgen_menu_right_text">#FFFFFFFF</color>
-    <color name="manual_button_active">#64DD17</color>
+    <color name="manual_button_active">#00E5FF</color>
+
+    <color name="ui_bg">#0F1115</color>
+    <color name="ui_text_primary">#FFFFFFFF</color>
+    <color name="ui_text_secondary">#B3FFFFFF</color>
+    <color name="accent">#00E5FF</color>
+    <color name="glass_chip">#1FFFFFFF</color>
+    <color name="glass_chip_border">#33FFFFFF</color>
+    <color name="glass_panel">#E614171D</color>
 </resources>
