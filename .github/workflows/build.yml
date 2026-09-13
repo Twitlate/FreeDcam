@@ -14,8 +14,10 @@ jobs:
           java-version: '17'
       - name: Install SDK components
         run: |
-          yes | sdkmanager --licenses > /dev/null
-          sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;21.4.7075529" "cmake;3.22.1"
+          SDKMANAGER=$(find /usr/local/lib/android/sdk -name sdkmanager -type f | head -n 1)
+          echo "Using sdkmanager: $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0" "ndk;21.4.7075529" "cmake;3.22.1"
       - name: Build debug APK
         run: ./gradlew assembleDebug
       - name: Upload APK
