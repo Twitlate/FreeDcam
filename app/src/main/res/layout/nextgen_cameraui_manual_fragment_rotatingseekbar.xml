@@ -13,7 +13,7 @@
         android:layout_marginEnd="93dp"
         android:layout_marginRight="93dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/roundcorners">
+        android:background="@drawable/nextgen_chip_solid">
 
         <freed.cam.ui.themenextgen.view.NextGenRotatingSeekbar
             android:id="@+id/seekbar"
@@ -27,12 +27,12 @@
         android:id="@+id/horizontalScrollView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/halfroundtopcorners"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/nextgen_panel"
         android:overScrollMode="never"
-        android:padding="1dp"
+        android:padding="4dp"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbarAlwaysDrawVerticalTrack="false">
 
@@ -54,7 +54,4 @@
         android:layout_marginRight="5dp"
         android:layout_toStartOf="@+id/frameLayout"
         android:layout_toLeftOf="@+id/frameLayout" />
-
-
-
 </RelativeLayout>
