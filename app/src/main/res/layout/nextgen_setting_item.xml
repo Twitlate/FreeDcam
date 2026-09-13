@@ -11,7 +11,14 @@
     <RelativeLayout
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/nextgen_chip"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         setViewState="@{parameter.viewState}">
 
         <TextView
@@ -19,12 +26,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginTop="5dp"
-            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
             android:text="TextView"
-            android:textColor="@color/nextgen_menu_right_text" />
+            android:textColor="@color/nextgen_menu_right_text"
+            android:textSize="@dimen/settings_menu_item_header" />
 
         <TextView
             android:id="@+id/textView_value"
@@ -35,21 +43,21 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
             android:text="@{parameter.stringValue}"
-            android:textColor="@color/nextgen_menu_right_text" />
+            android:textColor="@color/accent"
+            android:textSize="@dimen/settings_menu_item_header_value" />
 
         <TextView
             android:id="@+id/textView_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="2dp"
             android:text="TextView"
-            android:textColor="@color/nextgen_menu_right_text"
-            android:textSize="10sp" />
-
+            android:textColor="@color/ui_text_secondary"
+            android:textSize="@dimen/settings_menu_item_description" />
     </RelativeLayout>
 </layout>
