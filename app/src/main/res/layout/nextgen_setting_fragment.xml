@@ -10,12 +10,12 @@
 
         <FrameLayout
             android:id="@+id/setting_holder"
-            android:layout_width="400dp"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/roundcorners">
+            android:background="@drawable/nextgen_panel">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/setting_fragment_holder"
@@ -30,15 +30,12 @@
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabIndicator="@color/nextgen_menu_right_text"
-                    app:tabIndicatorColor="@color/nextgen_menu_right_text"
+                    app:tabIndicator="@color/accent"
+                    app:tabIndicatorColor="@color/accent"
                     app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/nextgen_menu_right_text"
-                    app:tabTextColor="@color/nextgen_menu_right_text" />
-
-
+                    app:tabSelectedTextColor="@color/accent"
+                    app:tabTextColor="@color/ui_text_secondary" />
             </androidx.viewpager.widget.ViewPager>
         </FrameLayout>
     </FrameLayout>
-
 </layout>
